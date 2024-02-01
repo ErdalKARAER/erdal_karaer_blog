@@ -20,6 +20,11 @@ const MainMenu = ({ children: _, ...otherProps }) => {
               </Link>
             </li>
             <li>
+              <Link href="/your-profile" styless>
+                Your profile
+              </Link>
+            </li>
+            <li>
               <button onClick={signOut}>Logout</button>
             </li>
           </>
