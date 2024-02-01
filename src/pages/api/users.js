@@ -3,7 +3,12 @@ import mw from "@/api/mw"
 import hashPassword from "@/db/hashPassword"
 import { AVERAGE_PASSWORD_HASHING_DURATION } from "@/pages/api/constants"
 import sleep from "@/utils/sleep"
-import { emailValidator, passwordValidator, pageValidator } from "@/utils/validators"
+import {
+  emailValidator,
+  passwordValidator,
+  pageValidator,
+  idValidator,
+} from "@/utils/validators"
 
 const handle = mw({
   POST: [
@@ -41,6 +46,47 @@ const handle = mw({
       send(true)
     },
   ],
+
+  PUT: [
+    validate({
+      body: {
+        userId: idValidator.required(),
+        email: emailValidator.required()
+      },
+    }),
+    async ({
+      send,
+      input: {
+        body: { userId, email, password },
+      },
+      models: { UserModel },
+    }) => {
+      //eslint-disable-next-line no-console
+      console.log("Received update request for userId:", userId)
+
+      const user = await UserModel.query().findById(userId)
+
+      if (!user) {
+        //eslint-disable-next-line no-console
+        console.log("User not found")
+        send(false)
+
+        return
+      }
+
+      const [passwordHash, passwordSalt] = await hashPassword(password)
+
+      await UserModel.query().findById(userId).patch({
+        email,
+        passwordHash,
+        passwordSalt,
+      })
+      //eslint-disable-next-line no-console
+      console.log("Profile updated successfully!")
+      send(true)
+    },
+  ],
+
   GET: [
     validate({
       query: {
