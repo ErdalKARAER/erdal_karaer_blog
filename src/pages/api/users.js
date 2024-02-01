@@ -3,7 +3,7 @@ import mw from "@/api/mw"
 import hashPassword from "@/db/hashPassword"
 import { AVERAGE_PASSWORD_HASHING_DURATION } from "@/pages/api/constants"
 import sleep from "@/utils/sleep"
-import { emailValidator, passwordValidator } from "@/utils/validators"
+import { emailValidator, passwordValidator, pageValidator } from "@/utils/validators"
 
 const handle = mw({
   POST: [
@@ -39,6 +39,26 @@ const handle = mw({
       })
 
       send(true)
+    },
+  ],
+  GET: [
+    validate({
+      query: {
+        page: pageValidator.required(),
+      },
+    }),
+    async ({
+      send,
+      input: {
+        query: { page },
+      },
+      models: { UserModel },
+    }) => {
+      const query = UserModel.query()
+      const users = await query.clone().page(page)
+      const [{ count }] = await query.clone().count()
+
+      send(users, { count })
     },
   ],
 })
