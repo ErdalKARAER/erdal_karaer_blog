@@ -57,32 +57,21 @@ const handle = mw({
     async ({
       send,
       input: {
-        body: { userId, email, password },
+        body: { userId, email},
       },
       models: { UserModel },
     }) => {
-      //eslint-disable-next-line no-console
-      console.log("Received update request for userId:", userId)
-
       const user = await UserModel.query().findById(userId)
 
       if (!user) {
-        //eslint-disable-next-line no-console
-        console.log("User not found")
         send(false)
 
         return
       }
 
-      const [passwordHash, passwordSalt] = await hashPassword(password)
-
       await UserModel.query().findById(userId).patch({
         email,
-        passwordHash,
-        passwordSalt,
       })
-      //eslint-disable-next-line no-console
-      console.log("Profile updated successfully!")
       send(true)
     },
   ],
