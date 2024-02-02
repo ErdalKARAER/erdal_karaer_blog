@@ -1,25 +1,43 @@
+/* eslint-disable no-shadow */
 /* eslint-disable no-console */
 /* eslint-disable max-lines-per-function */
 import { useEffect, useState } from "react"
+import { useSession } from "@/web/components/SessionContext"
+import { useRouter } from "next/router"
 
 const YourProfilePage = () => {
+  const { session } = useSession()
+  const router = useRouter()
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
   const [newEmail, setNewEmail] = useState("")
   const [isEditing, setIsEditing] = useState(false)
 
   useEffect(() => {
-    // Fetch user data from the GET API
+      if (!session) {
+        router.push("/")
+      }
+
     const fetchUser = async () => {
       try {
-        const response = await fetch(`/api/users?page=1`)
+        const response = await fetch(`/api/users?id=${session.user.id}`)
         const data = await response.json()
+        console.log(data)
 
-        if (data && data.result && data.result[0]) {
-          setUser(data.result[0])
+        if (data && data.result && data.result.length > 0) {
+          const userWithMatchingId = data.result.find(
+            (user) => user.id === session.user.id,
+          )
+
+          if (userWithMatchingId) {
+            setUser(userWithMatchingId)
+          } else {
+            console.error("User not found")
+          }
+        } else {
+          console.error("No user in the database")
         }
       } catch (error) {
-        //eslint-disable-next-line
         console.error("Error fetching user data", error)
       } finally {
         setLoading(false)

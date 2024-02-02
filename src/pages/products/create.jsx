@@ -25,14 +25,14 @@ const CreatePage = () => {
   })
   const handleSubmit = useCallback(
     async ({ name, description, categoryId }) => {
-      // eslint-disable-next-line no-unused-vars
       const { data: product } = await saveProduct({
         name,
         description,
         categoryId,
       })
+      const productId = product.result[0].id
 
-      // Router.push(`/products/${product.id}`) j'ai mis une majuscule pcq eslint
+      router.push(`/products/${productId}`)
     },
     [saveProduct, router],
   )
