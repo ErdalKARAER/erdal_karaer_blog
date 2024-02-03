@@ -23,6 +23,7 @@ const handle = mw({
       const product = await ProductModel.query()
         .findById(productId)
         .withGraphFetched("category")
+        .withGraphFetched("user")
         .throwIfNotFound()
 
       send(product)
