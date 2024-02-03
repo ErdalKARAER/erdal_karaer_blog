@@ -13,19 +13,23 @@ const ProductPage = () => {
     queryKey: ["product"],
     queryFn: () => axios(`/api/products/${productId}`),
     enabled: Boolean(productId),
-    initialData: { data: {} },
+    initialData: { data: { name: "", id: "", description: "" } },
   })
 
   if (isLoading) {
     return "Loading..."
   }
 
+ 
+
   return (
     <article>
-      <h1 className="text-2xl">
-        {product.name} (#{product.id})
-      </h1>
-      <p>{product.description}</p>
+      {product.id !== "" && (
+        <h1 className="text-2xl">
+          {product.result[0].name} (#{product.result[0].id})
+        </h1>
+      )}
+      {product.description !== "" && <p>{product.result[0].description}</p>}
     </article>
   )
 }
