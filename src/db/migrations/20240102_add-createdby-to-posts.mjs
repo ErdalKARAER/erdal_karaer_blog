@@ -1,11 +1,12 @@
 export const up = async (db) => {
   await db.schema.alterTable("products", (table) => {
-    table.text("createdBy").notNullable().defaultTo("")
+    table.integer("userId").notNullable().defaultTo(1)
+    table.foreign("userId").references("id").inTable("users")
   })
 }
 
 export const down = async (db) => {
   await db.schema.alterTable("products", (table) => {
-    table.dropColumn("createdBy")
+    table.dropColumn("userId")
   })
 }
