@@ -51,13 +51,13 @@ const handle = mw({
     validate({
       body: {
         userId: idValidator.required(),
-        email: emailValidator.required(),
+        email: emailValidator.required()
       },
     }),
     async ({
       send,
       input: {
-        body: { userId, email },
+        body: { userId, email},
       },
       models: { UserModel },
     }) => {
@@ -94,37 +94,6 @@ const handle = mw({
       const [{ count }] = await query.clone().count()
 
       send(users, { count })
-    },
-  ],
-  DELETE: [
-    validate({
-      body: {
-        userId: idValidator.required(),
-      },
-    }),
-    async ({
-      send,
-      input: {
-        body: { userId },
-      },
-      models: { UserModel },
-    }) => {
-      try {
-        const user = await UserModel.query().findById(userId)
-
-        if (!user) {
-          send(false)
-
-          return
-        }
-
-        await user.$query().delete()
-        send(true)
-      } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error(`Error deleting user with ID ${userId}:`, error)
-        send(false)
-      }
     },
   ],
 })
