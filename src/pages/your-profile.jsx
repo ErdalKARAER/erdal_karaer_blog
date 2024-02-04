@@ -14,9 +14,9 @@ const YourProfilePage = () => {
   const [isEditing, setIsEditing] = useState(false)
 
   useEffect(() => {
-      if (!session) {
-        router.push("/")
-      }
+    if (!session) {
+      router.push("/")
+    }
 
     const fetchUser = async () => {
       try {

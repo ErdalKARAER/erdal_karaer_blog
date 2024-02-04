@@ -47,6 +47,44 @@ const handle = mw({
       send(products, { count })
     },
   ],
+  PUT: [
+    auth,
+    validate({
+      query: {
+        productId: idValidator.required(),
+      },
+      body: {
+        name: nameValidator,
+        description: descriptionValidator,
+        categoryId: idValidator,
+      },
+    }),
+    async ({
+      send,
+      input: {
+        query: { productId },
+        body,
+      },
+      models: { ProductModel },
+    }) => {
+      try {
+        const existingProduct = await ProductModel.query()
+          .findById(productId)
+          .throwIfNotFound()
+        // Update only the provided fields
+        const updatedProduct = await existingProduct
+          .$query()
+          .patchAndFetch(body)
+
+        send(updatedProduct)
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error("Error updating product:", error)
+        // Handle error response
+        // For example: send({ error: "Failed to update product" }, 500);
+      }
+    },
+  ],
 })
 
 export default handle

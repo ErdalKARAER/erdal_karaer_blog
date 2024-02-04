@@ -29,6 +29,33 @@ const handle = mw({
       send(product)
     },
   ],
+  PUT: [
+    // Add this block for handling the PUT method
+    validate({
+      query: {
+        productId: idValidator.required(),
+      },
+      body: {
+        name: nameValidator,
+        description: descriptionValidator,
+      },
+    }),
+    async ({
+      send,
+      input: {
+        query: { productId },
+        body,
+      },
+      models: { ProductModel },
+    }) => {
+      const updatedProduct = await ProductModel.query()
+        .updateAndFetchById(productId, body)
+        .withGraphFetched("category")
+        .throwIfNotFound()
+
+      send(updatedProduct)
+    },
+  ],
   PATCH: [
     validate({
       query: {
