@@ -11,7 +11,9 @@ const ProductPage = () => {
   const router = useRouter()
   const { session } = useSession()
   const [isEditing, setIsEditing] = useState(false)
+  const [isCommenting, setIsCommenting] = useState(false)
   const [newTitle, setNewTitle] = useState("")
+  const [newComment, setNewComment] = useState("")
   const [newDescription, setNewDescription] = useState("")
   const [post, setPost] = useState(null)
   const {
@@ -54,6 +56,41 @@ const ProductPage = () => {
       console.error("Error updating title", error)
     }
   }
+  const handleSendComment = async () => {
+    try {
+      console.log(newComment)
+      console.log(productId)
+      console.log(session.user.id)
+      const response = await fetch(`/api/comments`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          comment: newComment,
+          postId: productId,
+          userId: session.user.id,
+        }),
+      })
+      const data = await response.json()
+
+      if (response.status === 200) {
+        // Handle successful comment submission
+        console.log("Comment submitted successfully!")
+        // You might want to update the UI or reload the page here
+      } else {
+        console.error("Error submitting comment:", data.error)
+      }
+
+      if (response.ok) {
+        console.log("Comment submitted successfully!")
+      } else {
+        console.error("Error submitting comment:", data.error)
+      }
+    } catch (error) {
+      console.error("Error submitting comment:", error)
+    }
+  }
 
   if (isLoading) {
     return "Loading..."
@@ -94,6 +131,19 @@ const ProductPage = () => {
         ) : (
           <button onClick={() => setIsEditing(true)}>Edit post</button>
         ))}
+      {isCommenting ? (
+        <div>
+          <label>Comment :</label>
+          <input
+            type="text"
+            value={newComment}
+            onChange={(e) => setNewComment(e.target.value)}
+          />
+          <button onClick={handleSendComment}>Save</button>
+        </div>
+      ) : (
+        <button onClick={() => setIsCommenting(true)}>New comment</button>
+      )}
     </article>
   )
 }

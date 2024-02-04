@@ -47,6 +47,14 @@ const handle = mw({
       send(products, { count })
     },
   ],
+  GET_ALL: [
+    async ({ send, models: { ProductModel } }) => {
+      const query = ProductModel.query()
+      const products = await query.clone().withGraphFetched("category")
+      const [{ count }] = await query.clone().count()
+      send(products, { count })
+    },
+  ],
   PUT: [
     auth,
     validate({

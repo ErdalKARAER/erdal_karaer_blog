@@ -10,6 +10,8 @@ export const pageValidator = number().min(1).default(1).required()
 
 export const emailValidator = string().email()
 
+export const commentValidator = string().min(3)
+
 export const passwordValidator = string()
   .min(8)
   .matches(

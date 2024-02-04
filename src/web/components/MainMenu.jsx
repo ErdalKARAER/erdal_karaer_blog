@@ -1,8 +1,14 @@
 import { useSession } from "@/web/components/SessionContext"
 import Link from "@/web/components/ui/Link"
+import { useRouter } from "next/router"
 
 const MainMenu = ({ children: _, ...otherProps }) => {
   const { session, signOut } = useSession()
+  const router = useRouter()
+  const handleSignOut = async () => {
+    await signOut()
+    router.push("/")
+  }
 
   return (
     <nav {...otherProps}>
@@ -25,7 +31,7 @@ const MainMenu = ({ children: _, ...otherProps }) => {
               </Link>
             </li>
             <li>
-              <button onClick={signOut}>Logout</button>
+              <button onClick={handleSignOut}>Logout</button>
             </li>
           </>
         ) : (

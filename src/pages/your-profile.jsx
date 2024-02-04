@@ -22,7 +22,6 @@ const YourProfilePage = () => {
       try {
         const response = await fetch(`/api/users?id=${session.user.id}`)
         const data = await response.json()
-        console.log(data)
 
         if (data && data.result && data.result.length > 0) {
           const userWithMatchingId = data.result.find(
@@ -71,6 +70,20 @@ const YourProfilePage = () => {
       console.error("Error updating user email", error)
     }
   }
+  const getCountOfPosts = async () => {
+    try {
+      const response = await fetch(`/api/products`)
+
+      if (response.ok) {
+        const data = await response.json()
+        console.log("Product data:", data)
+      } else {
+        console.error("Error retrieving products:", response.statusText)
+      }
+    } catch (error) {
+      console.error("Error updating user email", error)
+    }
+  }
 
   if (loading) {
     return <div>Loading...</div>
@@ -84,6 +97,7 @@ const YourProfilePage = () => {
     <div>
       <h1>Your Profile</h1>
       <p>Email: {user.email}</p>
+      <button onClick={getCountOfPosts}>oui</button>
 
       {isEditing ? (
         <div>
