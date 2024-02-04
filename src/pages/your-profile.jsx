@@ -94,23 +94,39 @@ const YourProfilePage = () => {
   }
 
   return (
-    <div>
-      <h1>Your Profile</h1>
-      <p>Email: {user.email}</p>
-      <button onClick={getCountOfPosts}>oui</button>
+    <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-md shadow-md">
+      <h1 className="text-2xl font-bold mb-4">Your Profile</h1>
+      <p className="text-gray-600 mb-4">Email: {user?.email}</p>
+      <button
+        className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600"
+        onClick={getCountOfPosts}
+      >
+        Get Post Count
+      </button>
 
       {isEditing ? (
-        <div>
-          <label>New Email:</label>
+        <form className="mt-4">
+          <label className="block text-gray-700">New Email:</label>
           <input
             type="email"
             value={newEmail}
             onChange={(e) => setNewEmail(e.target.value)}
+            className="w-full border rounded-md p-2 mt-1"
           />
-          <button onClick={handleEmailChange}>Save</button>
-        </div>
+          <button
+            className="bg-blue-500 text-white py-2 px-4 rounded-md mt-4 hover:bg-blue-600"
+            onClick={handleEmailChange}
+          >
+            Save
+          </button>
+        </form>
       ) : (
-        <button onClick={() => setIsEditing(true)}>Edit Email</button>
+        <button
+          className="bg-blue-500 text-white py-2 px-4 rounded-md mt-4 hover:bg-blue-600"
+          onClick={() => setIsEditing(true)}
+        >
+          Edit Email
+        </button>
       )}
     </div>
   )

@@ -132,53 +132,81 @@ const ProductPage = () => {
   }
 
   return (
-    <article>
+    <article className="max-w-2xl mx-auto my-8 p-4 bg-[#AA8976] shadow-md rounded-md text-white">
       {product.id !== "" && (
-        <h1 className="text-2xl">
+        <h1 className="text-3xl font-bold mb-4">
           {product.result[0].name} (#{product.result[0].id})
         </h1>
       )}
-      {product.description !== "" && <p>{product.result[0].description}</p>}
+      {product.description !== "" && (
+        <p className="mb-4">{product.result[0].description}</p>
+      )}
       {product.views !== "" && (
-        <p>Nombre de vues : {product.result[0].views}</p>
+        <p className="mb-4">Nombre de vues : {product.result[0].views}</p>
       )}
       {product.userId !== "" && (
-        <p>Créer par : {product.result[0].user.email}</p>
+        <p className="mb-4">Créer par : {product.result[0].user.email}</p>
       )}
-      {isOwner &&
-        (isEditing ? (
-          <div>
-            <label>New title:</label>
-            <input
-              type="text"
-              value={newTitle}
-              onChange={(e) => setNewTitle(e.target.value)}
-            />
-            <label>New description:</label>
-            <input
-              type="text"
-              value={newDescription}
-              onChange={(e) => setNewDescription(e.target.value)}
-            />
-            <button onClick={handlePostChange}>Save</button>
-          </div>
-        ) : (
-          <div>
-            <button onClick={() => setIsEditing(true)}>Edit post</button>
-          </div>
-        ))}
+      {isOwner && (
+        <>
+          {isEditing ? (
+            <div className="mb-4">
+              <label className="block mb-2 text-white">New title:</label>
+              <input
+                type="text"
+                value={newTitle}
+                onChange={(e) => setNewTitle(e.target.value)}
+                className="w-full border border-gray-300 rounded p-2 text-black"
+              />
+              <label className="block mb-2 text-white">New description:</label>
+              <input
+                type="text"
+                value={newDescription}
+                onChange={(e) => setNewDescription(e.target.value)}
+                className="w-full border border-gray-300 rounded p-2 text-black"
+              />
+              <button
+                onClick={handlePostChange}
+                className="bg-blue-500 text-white px-4 py-2 rounded-md mt-4"
+              >
+                Save
+              </button>
+            </div>
+          ) : (
+            <div className="mb-4">
+              <button
+                onClick={() => setIsEditing(true)}
+                className="bg-green-500 text-white px-4 py-2 rounded-md"
+              >
+                Edit post
+              </button>
+            </div>
+          )}
+        </>
+      )}
       {isCommenting ? (
-        <div>
-          <label>Comment :</label>
+        <div className="mb-4">
+          <label className="block mb-2 text-white">Comment :</label>
           <input
             type="text"
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
+            className="w-full border border-gray-300 rounded p-2 text-black"
           />
-          <button onClick={handleSendComment}>Save</button>
+          <button
+            onClick={handleSendComment}
+            className="bg-blue-500 text-white px-4 py-2 rounded-md mt-4"
+          >
+            Save
+          </button>
         </div>
       ) : (
-        <button onClick={() => setIsCommenting(true)}>New comment</button>
+        <button
+          onClick={() => setIsCommenting(true)}
+          className="bg-green-500 text-white px-4 py-2 rounded-md"
+        >
+          New comment
+        </button>
       )}
     </article>
   )

@@ -57,43 +57,35 @@ const YourProfilePage = () => {
     try {
       console.log("Blocking user with ID:", userId)
 
-      // Fetch user data
-      const response = await fetch(`/api/users/`)
-      const data = await response.json()
+      // Find the user with the matching ID in the local state
+      const userWithMatchingId = users.find((user) => user.id === userId)
 
-      if (data && data.result && data.result.length > 0) {
-        // Find the user with the matching ID
-        const userWithMatchingId = data.result.find(
-          (user) => user.id === userId,
+      console.log("User with matching ID:", userWithMatchingId.disable)
+
+      userWithMatchingId.disable = !userWithMatchingId.disable
+
+      console.log("User:", userWithMatchingId)
+
+      const updateResponse = await fetch(`/api/users/${userId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: userWithMatchingId.id,
+          email: userWithMatchingId.email,
+          disable: Boolean(userWithMatchingId.disable),
+        }),
+      })
+
+      if (updateResponse.ok) {
+        console.log(`User with ID ${userId} blocked/unblocked successfully.`)
+        setIsDisable(true)
+      } else {
+        console.error(
+          `Error updating user with ID ${userId}:`,
+          updateResponse.statusText,
         )
-
-        console.log("User with matching ID:", userWithMatchingId.disable)
-
-        userWithMatchingId.disable = !userWithMatchingId.disable
-
-        console.log("User:", userWithMatchingId)
-
-        const updateResponse = await fetch(`/api/users/${userId}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            userId: userWithMatchingId.id,
-            email: userWithMatchingId.email,
-            disable: Boolean(userWithMatchingId.disable),
-          }),
-        })
-
-        if (updateResponse.ok) {
-          console.log(`User with ID ${userId} blocked/unblocked successfully.`)
-          setIsDisable(true)
-        } else {
-          console.error(
-            `Error updating user with ID ${userId}:`,
-            updateResponse.statusText,
-          )
-        }
       }
     } catch (error) {
       console.error(`Error updating user with ID ${userId}:`, error)
@@ -109,16 +101,42 @@ const YourProfilePage = () => {
   }
 
   return (
-    <div>
-      {isDisable && <div>User blocked/unblocked successfully.</div>}
-      <h2>All Users:</h2>
+    <div className="container mx-auto p-4">
+      {isDisable && (
+        <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
+          User blocked/unblocked successfully.
+        </div>
+      )}
+      <h2 className="text-2xl font-bold mb-4">All Users:</h2>
       <ul>
         {users.map((user) => (
-          <li key={user.id}>
-            {user.email}
-            <button onClick={() => handleEditUser(user.id)}>✏️</button>
-            <button onClick={() => handleBlockUser(user.id)}>🚫</button>
-            <button onClick={() => handleDeleteUser(user.id)}>🗑️</button>
+          <li
+            key={user.id}
+            className="border-b border-gray-200 flex items-center justify-between p-2"
+          >
+            <span className="mr-2">{user.email}</span>
+            <div>
+              <button
+                className="mr-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                onClick={() => handleEditUser(user.id)}
+              >
+                ✏️
+              </button>
+              <button
+                className={`${
+                  user.disable ? "bg-green-500" : "bg-red-500"
+                } hover:bg-red-700 text-white font-bold py-2 px-4 rounded`}
+                onClick={() => handleBlockUser(user.id)}
+              >
+                {user.disable ? "✅" : "🚫"}
+              </button>
+              <button
+                className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                onClick={() => handleDeleteUser(user.id)}
+              >
+                🗑️
+              </button>
+            </div>
           </li>
         ))}
       </ul>

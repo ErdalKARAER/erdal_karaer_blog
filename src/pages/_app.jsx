@@ -6,20 +6,18 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 
 const queryClient = new QueryClient()
 const App = ({ Component: Page, pageProps }) => (
-  <div>
+  <div className="bg-[#F0E2D0] min-h-screen">
     <SessionContextProvider>
       <QueryClientProvider client={queryClient}>
-        <header className="border-b-2">
+        <header className="border-b-2 bg-[#C6EBC9]">
           <div className="max-w-3xl mx-auto flex items-center p-4">
-            <h1 className="text-2xl">
-              <Link href="/" styless>
-                BEST WEBSITE E.V.E.R
-              </Link>
+            <h1 className="text-2xl font-semibold">
+              <Link href="/" className="text-blue-500 hover:underline"></Link>
             </h1>
             <MainMenu className="ms-auto" />
           </div>
         </header>
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-3xl mx-auto p-4">
           <Page {...pageProps} />
         </div>
       </QueryClientProvider>

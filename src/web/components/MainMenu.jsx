@@ -6,7 +6,7 @@ import Link from "@/web/components/ui/Link"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 
-const MainMenu = ({ children: _, ...otherProps }) => {
+const MainMenu = ({ children: _ }) => {
   const { session, signOut } = useSession()
   const router = useRouter()
   const [user, setUser] = useState(null)
@@ -49,16 +49,16 @@ const MainMenu = ({ children: _, ...otherProps }) => {
   console.log("Session:", session)
 
   return (
-    <nav {...otherProps}>
+    <nav className="bg-[#AA8976] p-4 shadow-md rounded-md">
       <ul className="flex gap-4">
         <li>
-          <Link href="/" styless>
+          <Link href="/" className="text-white">
             Home
           </Link>
         </li>
         {user && user.role === "admin" && (
           <li>
-            <Link href="/listUsersAdmin" styless>
+            <Link href="/listUsersAdmin" className="text-white">
               List users
             </Link>
           </li>
@@ -66,28 +66,33 @@ const MainMenu = ({ children: _, ...otherProps }) => {
         {session ? (
           <>
             <li>
-              <Link href="/products/create" styless>
+              <Link href="/products/create" className="text-white">
                 Create product
               </Link>
             </li>
             <li>
-              <Link href="/your-profile" styless>
+              <Link href="/your-profile" className="text-white">
                 Your profile
               </Link>
             </li>
             <li>
-              <button onClick={handleSignOut}>Logout</button>
+              <button
+                onClick={handleSignOut}
+                className="bg-red-500 text-white px-4 py-2 rounded"
+              >
+                Logout
+              </button>
             </li>
           </>
         ) : (
           <>
             <li>
-              <Link href="/sign-in" styless>
+              <Link href="/sign-in" className="text-white">
                 Sign in
               </Link>
             </li>
             <li>
-              <Link href="/sign-up" styless>
+              <Link href="/sign-up" className="text-white">
                 Sign up
               </Link>
             </li>
