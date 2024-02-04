@@ -12,6 +12,8 @@ export const emailValidator = string().email()
 
 export const commentValidator = string().min(3)
 
+export const viewsValidator = number()
+
 export const disableValidator = boolean().default(false)
 
 export const passwordValidator = string()

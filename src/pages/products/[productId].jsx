@@ -1,7 +1,8 @@
+/* eslint-disable max-lines */
 /* eslint-disable max-lines-per-function */
 /* eslint-disable no-console */
 import { useQuery } from "@tanstack/react-query"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import axios from "axios"
 import { useRouter } from "next/router"
 import { useSession } from "@/web/components/SessionContext"
@@ -26,9 +27,39 @@ const ProductPage = () => {
     queryKey: ["product"],
     queryFn: () => axios(`/api/products/${productId}`),
     enabled: Boolean(productId),
-    initialData: { data: { name: "", id: "", description: "", userId: "" } },
+    initialData: {
+      data: { name: "", id: "", description: "", userId: "", views: "" },
+    },
   })
-  const handleEmailChange = async () => {
+  useEffect(() => {
+    const incrementProductViews = async () => {
+      try {
+        if (productId && !isEditing && product.views !== "") {
+          const response = await fetch(`/api/products/${productId}`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              views: product.result[0].views + 1,
+            }),
+          })
+          const data = await response.json()
+
+          if (data.result) {
+            console.log(data.result)
+          } else {
+            console.error("Error incrementing views:", data.error)
+          }
+        }
+      } catch (error) {
+        console.error("Error incrementing views", error)
+      }
+    }
+
+    incrementProductViews()
+  }, [productId, isEditing])
+  const handlePostChange = async () => {
     try {
       const response = await fetch(`/api/products/${productId}`, {
         method: "PUT",
@@ -108,6 +139,9 @@ const ProductPage = () => {
         </h1>
       )}
       {product.description !== "" && <p>{product.result[0].description}</p>}
+      {product.views !== "" && (
+        <p>Nombre de vues : {product.result[0].views}</p>
+      )}
       {product.userId !== "" && (
         <p>Créer par : {product.result[0].user.email}</p>
       )}
@@ -126,10 +160,12 @@ const ProductPage = () => {
               value={newDescription}
               onChange={(e) => setNewDescription(e.target.value)}
             />
-            <button onClick={handleEmailChange}>Save</button>
+            <button onClick={handlePostChange}>Save</button>
           </div>
         ) : (
-          <button onClick={() => setIsEditing(true)}>Edit post</button>
+          <div>
+            <button onClick={() => setIsEditing(true)}>Edit post</button>
+          </div>
         ))}
       {isCommenting ? (
         <div>

@@ -16,6 +16,10 @@ const MainMenu = ({ children: _, ...otherProps }) => {
   }
   useEffect(() => {
     const fetchUser = async () => {
+      if (!session || !session.user) {
+        return
+      }
+
       try {
         const response = await fetch(`/api/users?id=${session.user.id}`)
         const data = await response.json()
@@ -35,13 +39,11 @@ const MainMenu = ({ children: _, ...otherProps }) => {
         }
       } catch (error) {
         console.error("Error fetching user data", error)
-      } finally {
-        //
       }
     }
 
     fetchUser()
-  }, [])
+  }, [session])
 
   console.log("User:", user)
   console.log("Session:", session)

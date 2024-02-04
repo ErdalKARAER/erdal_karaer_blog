@@ -6,6 +6,7 @@ import {
   idValidator,
   nameValidator,
   pageValidator,
+  viewsValidator,
 } from "@/utils/validators"
 
 const handle = mw({
@@ -65,6 +66,7 @@ const handle = mw({
         name: nameValidator,
         description: descriptionValidator,
         categoryId: idValidator,
+        views: viewsValidator,
       },
     }),
     async ({
