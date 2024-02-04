@@ -1,7 +1,4 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-shadow */
 /* eslint-disable max-lines-per-function */
-/* eslint-disable no-console */
 import { descriptionValidator, nameValidator } from "@/utils/validators"
 import Button from "@/web/components/ui/Button"
 import Form from "@/web/components/ui/Form"
@@ -27,7 +24,7 @@ const initialValues = {
 const CreatePage = () => {
   const { session } = useSession()
   const router = useRouter()
-  const [user, setUser] = useState(null)
+  const [setUser] = useState(null)
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -42,13 +39,13 @@ const CreatePage = () => {
           if (userWithMatchingId) {
             setUser(userWithMatchingId)
           } else {
-            console.error("User not found")
+            //Console.error("User not found")
           }
         } else {
-          console.error("No user in the database")
+          //Console.error("No user in the database")
         }
       } catch (error) {
-        console.error("Error fetching user data", error)
+        //Console.error("Error fetching user data", error)
       }
     }
     fetchUser()
@@ -58,7 +55,7 @@ const CreatePage = () => {
     mutationFn: (product) => createResource("products", product),
   })
   const handleSubmit = useCallback(
-    async ({ name, description, categoryId, userId }) => {
+    async ({ name, description, categoryId }) => {
       const { data: product } = await saveProduct({
         name,
         description,

@@ -1,4 +1,3 @@
-// eslint-disable-next-line max-classes-per-file
 import BaseModel from "@/db/models/BaseModel"
 import UserModel from "@/db/models/UserModel"
 import ProductModel from "@/db/models/ProductModel"

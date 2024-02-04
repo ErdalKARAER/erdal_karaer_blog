@@ -21,7 +21,6 @@ const handle = mw({
         password: string().required(),
       },
     }),
-    // eslint-disable-next-line max-lines-per-function
     async ({
       send,
       res,

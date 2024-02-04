@@ -88,8 +88,6 @@ const handle = mw({
 
         send(updatedProduct)
       } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error("Error updating product:", error)
         // Handle error response
         // For example: send({ error: "Failed to update product" }, 500);
       }

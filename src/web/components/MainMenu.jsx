@@ -1,5 +1,3 @@
-/* eslint-disable no-shadow */
-/* eslint-disable no-console */
 /* eslint-disable max-lines-per-function */
 import { useSession } from "@/web/components/SessionContext"
 import Link from "@/web/components/ui/Link"
@@ -26,27 +24,24 @@ const MainMenu = ({ children: _ }) => {
 
         if (data && data.result && data.result.length > 0) {
           const userWithMatchingId = data.result.find(
-            (user) => user.id === session.user.id,
+            (user2) => user2.id === session.user.id,
           )
 
           if (userWithMatchingId) {
             setUser(userWithMatchingId)
           } else {
-            console.error("User not found")
+            //Console.error("User not found")
           }
         } else {
-          console.error("No user in the database")
+          //Console.error("No user in the database")
         }
       } catch (error) {
-        console.error("Error fetching user data", error)
+        //Console.error("Error fetching user data", error)
       }
     }
 
     fetchUser()
   }, [session])
-
-  console.log("User:", user)
-  console.log("Session:", session)
 
   return (
     <nav className="bg-[#AA8976] p-4 shadow-md rounded-md">

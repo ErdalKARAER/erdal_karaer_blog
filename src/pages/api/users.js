@@ -124,8 +124,6 @@ const handle = mw({
         await user.$query().delete()
         send(true)
       } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error(`Error deleting user with ID ${userId}:`, error)
         send(false)
       }
     },

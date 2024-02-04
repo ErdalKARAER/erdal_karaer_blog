@@ -1,6 +1,5 @@
 /* eslint-disable max-lines */
 /* eslint-disable max-lines-per-function */
-/* eslint-disable no-console */
 import { useQuery } from "@tanstack/react-query"
 import { useState, useEffect } from "react"
 import axios from "axios"
@@ -47,13 +46,13 @@ const ProductPage = () => {
           const data = await response.json()
 
           if (data.result) {
-            console.log(data.result)
+            //Console.log(data.result)
           } else {
-            console.error("Error incrementing views:", data.error)
+            //Console.error("Error incrementing views:", data.error)
           }
         }
       } catch (error) {
-        console.error("Error incrementing views", error)
+        //Console.error("Error incrementing views", error)
       }
     }
 
@@ -73,25 +72,19 @@ const ProductPage = () => {
       })
       const data = await response.json()
 
-      console.log(data)
-      console.log(productId)
-
       if (data.result) {
         setPost({ ...post, name: newTitle, description: newDescription })
         setIsEditing(false)
         router.reload()
       } else {
-        console.error("Error updating title:", data.error)
+        //Console.error("Error updating title:", data.error)
       }
     } catch (error) {
-      console.error("Error updating title", error)
+      //Console.error("Error updating title", error)
     }
   }
   const handleSendComment = async () => {
     try {
-      console.log(newComment)
-      console.log(productId)
-      console.log(session.user.id)
       const response = await fetch(`/api/comments`, {
         method: "POST",
         headers: {
@@ -107,19 +100,19 @@ const ProductPage = () => {
 
       if (response.status === 200) {
         // Handle successful comment submission
-        console.log("Comment submitted successfully!")
         // You might want to update the UI or reload the page here
       } else {
-        console.error("Error submitting comment:", data.error)
+        //Console.error("Error submitting comment:", data.error)
       }
 
-      if (response.ok) {
-        console.log("Comment submitted successfully!")
+      if (data) {
+        // Handle successful comment submission
+        // You might want to update the UI or reload the page here
       } else {
-        console.error("Error submitting comment:", data.error)
+        //Console.error("Error submitting comment:", data.error)
       }
     } catch (error) {
-      console.error("Error submitting comment:", error)
+      //Console.error("Error submitting comment", error)
     }
   }
 

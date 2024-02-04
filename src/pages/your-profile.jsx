@@ -1,5 +1,3 @@
-/* eslint-disable no-shadow */
-/* eslint-disable no-console */
 /* eslint-disable max-lines-per-function */
 import { useEffect, useState } from "react"
 import { useSession } from "@/web/components/SessionContext"
@@ -25,19 +23,19 @@ const YourProfilePage = () => {
 
         if (data && data.result && data.result.length > 0) {
           const userWithMatchingId = data.result.find(
-            (user) => user.id === session.user.id,
+            (user2) => user2.id === session.user.id,
           )
 
           if (userWithMatchingId) {
             setUser(userWithMatchingId)
           } else {
-            console.error("User not found")
+            //Console.error("User not found")
           }
         } else {
-          console.error("No user in the database")
+          //Console.error("No user in the database")
         }
       } catch (error) {
-        console.error("Error fetching user data", error)
+        //Console.error("Error fetching user data", error)
       } finally {
         setLoading(false)
       }
@@ -64,10 +62,10 @@ const YourProfilePage = () => {
         setUser({ ...user, email: newEmail })
         setIsEditing(false)
       } else {
-        console.error("Error updating user email:", data.error)
+        //Console.error("Error updating user email:", data.error)
       }
     } catch (error) {
-      console.error("Error updating user email", error)
+      //Console.error("Error updating user email", error)
     }
   }
   const getCountOfPosts = async () => {
@@ -75,13 +73,12 @@ const YourProfilePage = () => {
       const response = await fetch(`/api/products`)
 
       if (response.ok) {
-        const data = await response.json()
-        console.log("Product data:", data)
+        await response.json()
       } else {
-        console.error("Error retrieving products:", response.statusText)
+        //Console.error("Error retrieving products:", response.statusText)
       }
     } catch (error) {
-      console.error("Error updating user email", error)
+      //Console.error("Error updating user email", error)
     }
   }
 
@@ -111,7 +108,7 @@ const YourProfilePage = () => {
             type="email"
             value={newEmail}
             onChange={(e) => setNewEmail(e.target.value)}
-            className="w-full border rounded-md p-2 mt-1"
+            className="w-full border rounded-md p-2 mt-1 text-black"
           />
           <button
             className="bg-blue-500 text-white py-2 px-4 rounded-md mt-4 hover:bg-blue-600"

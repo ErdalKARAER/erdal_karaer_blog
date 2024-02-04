@@ -1,5 +1,3 @@
-/* eslint-disable no-shadow */
-/* eslint-disable no-console */
 /* eslint-disable max-lines-per-function */
 import { useEffect, useState } from "react"
 
@@ -13,13 +11,12 @@ const YourProfilePage = () => {
       try {
         const response = await fetch(`/api/users`)
         const data = await response.json()
-        console.log("User data:", data)
 
         if (data && data.result && data.result.length > 0) {
           setUsers(data.result)
         }
       } catch (error) {
-        console.error("Error fetching user data", error)
+        //Console.error("Error fetching user data", error)
       } finally {
         setLoading(false)
       }
@@ -30,7 +27,6 @@ const YourProfilePage = () => {
 
   const handleDeleteUser = async (userId) => {
     try {
-      console.log("Deleting user with ID:", userId)
       const response = await fetch(`/api/users/${userId}`, {
         method: "DELETE",
         headers: {
@@ -42,29 +38,19 @@ const YourProfilePage = () => {
       if (response.ok) {
         // If the deletion is successful, update the users state
         setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId))
-        console.log(`User with ID ${userId} deleted successfully.`)
       } else {
-        console.error(
-          `Error deleting user with ID ${userId}:`,
-          response.statusText,
-        )
+        //Console.error(`Error deleting user with ID ${userId}:`, response.statusText)
       }
     } catch (error) {
-      console.error(`Error deleting user with ID ${userId}:`, error)
+      //Console.error(`Error deleting user with ID ${userId}:`, error)
     }
   }
   const handleBlockUser = async (userId) => {
     try {
-      console.log("Blocking user with ID:", userId)
-
       // Find the user with the matching ID in the local state
       const userWithMatchingId = users.find((user) => user.id === userId)
 
-      console.log("User with matching ID:", userWithMatchingId.disable)
-
       userWithMatchingId.disable = !userWithMatchingId.disable
-
-      console.log("User:", userWithMatchingId)
 
       const updateResponse = await fetch(`/api/users/${userId}`, {
         method: "PUT",
@@ -79,21 +65,17 @@ const YourProfilePage = () => {
       })
 
       if (updateResponse.ok) {
-        console.log(`User with ID ${userId} blocked/unblocked successfully.`)
         setIsDisable(true)
       } else {
-        console.error(
-          `Error updating user with ID ${userId}:`,
-          updateResponse.statusText,
-        )
+        //Console.error(`Error updating user with ID ${userId}:`, updateResponse.statusText)
       }
     } catch (error) {
-      console.error(`Error updating user with ID ${userId}:`, error)
+      //Console.error(`Error updating user with ID ${userId}:`, error)
     }
   }
-  const handleEditUser = (userId) => {
+  const handleEditUser = () => {
     //SUUUUUUUUUUUUUUUU
-    console.log("Editing user with ID:", userId)
+    //Console.log("Editing user with ID:", userId)
   }
 
   if (loading) {
@@ -118,7 +100,7 @@ const YourProfilePage = () => {
             <div>
               <button
                 className="mr-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                onClick={() => handleEditUser(user.id)}
+                onClick={() => handleEditUser()}
               >
                 ✏️
               </button>
