@@ -101,7 +101,7 @@ const YourProfilePage = () => {
   }
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container max-w-2xl mx-auto my-8 p-4 bg-[#AA8976] shadow-md rounded-md text-white">
       {isDisable && (
         <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
           User blocked/unblocked successfully.
